@@ -1,24 +1,28 @@
-import sys
 import matplotlib.pyplot as plt
 
 
 def file_len(fname):
     with open(fname) as f:
-        for i, l in enumerate(f):
-            pass
-    return i + 1
+        length = 0
+        for i in f:
+            length += 1
+    return length
 
 
 line_lengths = []
-file_name = sys.argv[1]
+file_name = '/Users/Zamalutdinov/Desktop/test.fasta'
 file_lines = file_len(file_name)
+full_line = []
 with open(file_name) as file:
-    for k in range(file_lines//2):
-        file.readline()
+    for k in range(file_lines):
         line = file.readline().strip()
-        line_lengths.append(len(line))
+        if line[0] == '>':
+            line_lengths.append(len(full_line))
+            full_line = []
+        else:
+            full_line += line
 
-plt.hist(line_lengths, bins=25)
+plt.hist(line_lengths[1: len(line_lengths)], bins=25)
 plt.title('FASTA length distribution')
 plt.ylabel('Number')
 plt.xlabel('Length')
